@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#ff7f0e", "id": "Retailer_11", "label": "Retailer_11", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_9", "label": "Warehouse_9", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_8", "label": "Warehouse_8", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_5", "label": "Retailer_5", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_10", "label": "Supplier_10", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_6", "label": "Supplier_6", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_13", "label": "Warehouse_13", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_3", "label": "Supplier_3", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_20", "label": "Supplier_20", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_8", "label": "Supplier_8", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_16", "label": "Retailer_16", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_11", "label": "Supplier_11", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_15", "label": "Supplier_15", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_1", "label": "Retailer_1", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_20", "label": "Retailer_20", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_7", "label": "Supplier_7", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_2", "label": "Warehouse_2", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_14", "label": "Supplier_14", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_16", "label": "Warehouse_16", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_18", "label": "Supplier_18", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_20", "label": "Warehouse_20", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_1", "label": "Supplier_1", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_13", "label": "Supplier_13", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_19", "label": "Supplier_19", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_9", "label": "Supplier_9", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_8", "label": "Retailer_8", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_14", "label": "Warehouse_14", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_7", "label": "Retailer_7", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_19", "label": "Warehouse_19", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_4", "label": "Supplier_4", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_16", "label": "Supplier_16", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_17", "label": "Supplier_17", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_2", "label": "Retailer_2", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_13", "label": "Retailer_13", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_10", "label": "Warehouse_10", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_6", "label": "Retailer_6", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_9", "label": "Retailer_9", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_3", "label": "Warehouse_3", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_4", "label": "Retailer_4", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_18", "label": "Warehouse_18", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_19", "label": "Retailer_19", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_4", "label": "Warehouse_4", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_12", "label": "Warehouse_12", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_15", "label": "Warehouse_15", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_10", "label": "Retailer_10", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_14", "label": "Retailer_14", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_17", "label": "Retailer_17", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_17", "label": "Warehouse_17", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_15", "label": "Retailer_15", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_18", "label": "Retailer_18", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_7", "label": "Warehouse_7", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_12", "label": "Retailer_12", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_2", "label": "Supplier_2", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_12", "label": "Supplier_12", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_5", "label": "Warehouse_5", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_1", "label": "Warehouse_1", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_6", "label": "Warehouse_6", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_3", "label": "Retailer_3", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_11", "label": "Warehouse_11", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_5", "label": "Supplier_5", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": "#d62728", "cost": 14.363054866212664, "from": "Retailer_11", "to": "Warehouse_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 80.01748634800411, "from": "Retailer_11", "to": "Warehouse_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 41.847130864509836, "from": "Retailer_11", "to": "Retailer_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 74.04454880202442, "from": "Retailer_11", "to": "Supplier_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 28.04150312319413, "from": "Warehouse_9", "to": "Supplier_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 58.53314565390407, "from": "Warehouse_9", "to": "Warehouse_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 38.33461335635228, "from": "Supplier_3", "to": "Supplier_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 43.691658423224254, "from": "Supplier_3", "to": "Supplier_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 92.89645701697675, "from": "Retailer_16", "to": "Supplier_11", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 71.27666732589931, "from": "Retailer_16", "to": "Supplier_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 86.64581757694914, "from": "Supplier_11", "to": "Supplier_3", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 95.4865496051129, "from": "Supplier_11", "to": "Supplier_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 7.543699908693653, "from": "Retailer_1", "to": "Retailer_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 66.00708084559038, "from": "Retailer_1", "to": "Retailer_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 92.80097979130855, "from": "Retailer_1", "to": "Supplier_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 26.24484336516413, "from": "Supplier_7", "to": "Warehouse_2", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 32.26730772176051, "from": "Warehouse_2", "to": "Supplier_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 41.21715151818037, "from": "Warehouse_2", "to": "Warehouse_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 73.07548656941296, "from": "Warehouse_2", "to": "Supplier_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 4.424713042698479, "from": "Supplier_18", "to": "Warehouse_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 96.70911533495259, "from": "Supplier_1", "to": "Supplier_3", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 70.7849734145375, "from": "Supplier_1", "to": "Retailer_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 71.37381550015148, "from": "Supplier_1", "to": "Supplier_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 27.726534619277615, "from": "Supplier_1", "to": "Warehouse_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 18.180210223487723, "from": "Supplier_20", "to": "Supplier_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 77.74696643917473, "from": "Supplier_20", "to": "Supplier_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 80.98423169623081, "from": "Retailer_8", "to": "Warehouse_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 74.5810523850556, "from": "Retailer_8", "to": "Warehouse_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 23.24308224218735, "from": "Supplier_8", "to": "Warehouse_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 61.53921382695222, "from": "Retailer_7", "to": "Warehouse_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 53.20114812057801, "from": "Retailer_7", "to": "Retailer_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 82.74496634218764, "from": "Supplier_13", "to": "Supplier_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 12.714551705286263, "from": "Supplier_13", "to": "Warehouse_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 57.19183728434966, "from": "Supplier_13", "to": "Supplier_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 75.49114458505926, "from": "Supplier_13", "to": "Supplier_17", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 42.663825650478934, "from": "Retailer_2", "to": "Supplier_1", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 82.58598494750935, "from": "Retailer_2", "to": "Supplier_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 63.78968696108235, "from": "Retailer_2", "to": "Retailer_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 48.78846158099904, "from": "Retailer_2", "to": "Retailer_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 37.4705096645285, "from": "Warehouse_10", "to": "Retailer_7", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 52.908549721656506, "from": "Warehouse_10", "to": "Warehouse_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 36.08491208848518, "from": "Warehouse_10", "to": "Retailer_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 91.69843288231772, "from": "Retailer_9", "to": "Warehouse_3", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 19.430086600365915, "from": "Supplier_14", "to": "Warehouse_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 43.55061949389513, "from": "Supplier_14", "to": "Warehouse_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 85.88683625315473, "from": "Warehouse_19", "to": "Supplier_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 34.731589453571836, "from": "Supplier_4", "to": "Supplier_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 64.15534898329507, "from": "Supplier_4", "to": "Retailer_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 17.162869670196073, "from": "Supplier_4", "to": "Retailer_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 87.91481625861611, "from": "Supplier_4", "to": "Warehouse_18", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 60.89024534481299, "from": "Supplier_19", "to": "Supplier_11", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 30.29781214519899, "from": "Retailer_20", "to": "Supplier_18", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 74.29905865691306, "from": "Retailer_20", "to": "Retailer_7", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 96.28607615709544, "from": "Retailer_20", "to": "Retailer_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 12.743399072428302, "from": "Retailer_20", "to": "Supplier_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 68.13191418013932, "from": "Warehouse_4", "to": "Retailer_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 89.44484215118482, "from": "Warehouse_4", "to": "Warehouse_12", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 54.9320208153745, "from": "Warehouse_4", "to": "Warehouse_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 18.91850104293091, "from": "Warehouse_4", "to": "Warehouse_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 31.860398544627465, "from": "Retailer_10", "to": "Supplier_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 12.391380152507349, "from": "Retailer_10", "to": "Warehouse_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 68.12919623963583, "from": "Retailer_10", "to": "Warehouse_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 22.175719743547425, "from": "Retailer_10", "to": "Retailer_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 31.198669873196614, "from": "Warehouse_12", "to": "Retailer_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 47.62330173916004, "from": "Warehouse_12", "to": "Retailer_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 30.840491969400563, "from": "Warehouse_12", "to": "Retailer_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 32.47426396584369, "from": "Warehouse_12", "to": "Supplier_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 36.46327932974664, "from": "Retailer_17", "to": "Retailer_1", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 64.61729020705994, "from": "Retailer_17", "to": "Retailer_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 46.56738447589964, "from": "Retailer_17", "to": "Warehouse_3", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 3.1199483342378223, "from": "Warehouse_14", "to": "Retailer_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 42.91570192775831, "from": "Warehouse_14", "to": "Supplier_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 2.0172214303578446, "from": "Warehouse_17", "to": "Supplier_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 30.524686269245322, "from": "Warehouse_17", "to": "Supplier_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 87.53382060004368, "from": "Warehouse_17", "to": "Warehouse_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 29.26264404467597, "from": "Warehouse_17", "to": "Retailer_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 19.57262244722795, "from": "Retailer_18", "to": "Retailer_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 22.859741471922923, "from": "Retailer_18", "to": "Warehouse_18", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 61.770268182875135, "from": "Retailer_14", "to": "Supplier_7", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 63.82158547684545, "from": "Retailer_14", "to": "Warehouse_2", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 27.021234126945057, "from": "Retailer_14", "to": "Retailer_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 87.31286354030244, "from": "Retailer_14", "to": "Warehouse_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 9.751122845626773, "from": "Warehouse_16", "to": "Retailer_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 68.8492596444602, "from": "Warehouse_16", "to": "Supplier_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 67.67568103393548, "from": "Warehouse_16", "to": "Supplier_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 22.988237327118366, "from": "Warehouse_7", "to": "Warehouse_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 13.906333180167882, "from": "Supplier_16", "to": "Warehouse_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 34.141833468037284, "from": "Warehouse_15", "to": "Warehouse_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 4.908896593326132, "from": "Retailer_12", "to": "Retailer_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 27.282559315398395, "from": "Warehouse_8", "to": "Warehouse_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 33.452235725092436, "from": "Warehouse_8", "to": "Retailer_1", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 37.83943811440483, "from": "Warehouse_8", "to": "Retailer_17", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 24.026921868960773, "from": "Warehouse_8", "to": "Warehouse_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 79.46943752174829, "from": "Retailer_5", "to": "Warehouse_12", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 47.935594036707556, "from": "Retailer_5", "to": "Retailer_12", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 40.99856728317736, "from": "Retailer_5", "to": "Supplier_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 27.087557568799806, "from": "Retailer_4", "to": "Retailer_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 3.4419727231995756, "from": "Retailer_4", "to": "Warehouse_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 44.805348185784645, "from": "Retailer_4", "to": "Supplier_2", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 2.1393526577059303, "from": "Retailer_4", "to": "Retailer_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 13.03571352983946, "from": "Supplier_2", "to": "Warehouse_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 7.759068939701296, "from": "Supplier_2", "to": "Supplier_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 66.23694515140771, "from": "Supplier_2", "to": "Warehouse_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 54.94270240343601, "from": "Supplier_2", "to": "Warehouse_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 46.95849388406164, "from": "Supplier_2", "to": "Supplier_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 95.12747496500167, "from": "Supplier_2", "to": "Supplier_12", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 60.391223067729854, "from": "Supplier_2", "to": "Warehouse_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 15.949356402056093, "from": "Retailer_19", "to": "Retailer_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 69.07963354833159, "from": "Retailer_19", "to": "Supplier_7", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 81.23588422028766, "from": "Retailer_19", "to": "Retailer_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 30.219377996710474, "from": "Retailer_19", "to": "Retailer_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 71.5362534597927, "from": "Supplier_6", "to": "Retailer_2", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 73.93142290037076, "from": "Supplier_6", "to": "Supplier_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 33.86034677709029, "from": "Supplier_6", "to": "Warehouse_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 69.79348305987173, "from": "Supplier_6", "to": "Warehouse_3", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 37.76545006865551, "from": "Warehouse_1", "to": "Warehouse_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 66.26599889967436, "from": "Warehouse_6", "to": "Supplier_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 48.846580945372104, "from": "Warehouse_6", "to": "Supplier_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 81.27024236264968, "from": "Warehouse_6", "to": "Warehouse_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 93.86714229640906, "from": "Warehouse_6", "to": "Supplier_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 6.523490222340661, "from": "Warehouse_6", "to": "Warehouse_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 18.60864052693747, "from": "Supplier_15", "to": "Supplier_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 36.10770892397599, "from": "Supplier_15", "to": "Warehouse_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 3.6774296434194422, "from": "Supplier_15", "to": "Retailer_12", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 43.60535500337374, "from": "Warehouse_13", "to": "Warehouse_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 52.55771497935033, "from": "Warehouse_13", "to": "Warehouse_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 96.97834330448141, "from": "Warehouse_13", "to": "Retailer_17", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 42.54789319209559, "from": "Warehouse_13", "to": "Retailer_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 62.729528058077236, "from": "Warehouse_13", "to": "Warehouse_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 24.40798551552289, "from": "Warehouse_13", "to": "Supplier_17", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 7.743579531736334, "from": "Warehouse_13", "to": "Retailer_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 49.87425327571021, "from": "Supplier_9", "to": "Retailer_1", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 92.6695918106017, "from": "Supplier_9", "to": "Retailer_7", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 61.683192076128286, "from": "Supplier_9", "to": "Supplier_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 4.044653951577962, "from": "Supplier_12", "to": "Retailer_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 3.0063734700357605, "from": "Supplier_12", "to": "Warehouse_7", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 22.283373616079977, "from": "Supplier_12", "to": "Warehouse_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 19.306333886874967, "from": "Supplier_12", "to": "Supplier_17", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 87.13188619859687, "from": "Supplier_10", "to": "Supplier_11", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 16.93362115297684, "from": "Supplier_10", "to": "Retailer_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 53.24596420476225, "from": "Supplier_10", "to": "Warehouse_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 58.59631842543726, "from": "Supplier_10", "to": "Retailer_3", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 44.45497205607421, "from": "Warehouse_20", "to": "Supplier_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 19.645866613817194, "from": "Warehouse_20", "to": "Supplier_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 85.67720173806973, "from": "Warehouse_11", "to": "Retailer_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 40.407602387541715, "from": "Warehouse_18", "to": "Supplier_3", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 33.09514741212362, "from": "Warehouse_18", "to": "Supplier_11", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 59.9392027297074, "from": "Warehouse_18", "to": "Supplier_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 73.52014897168765, "from": "Warehouse_18", "to": "Supplier_2", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 85.26626587176548, "from": "Warehouse_18", "to": "Retailer_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 22.01796071564949, "from": "Warehouse_18", "to": "Warehouse_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 19.90591164295881, "from": "Supplier_5", "to": "Supplier_1", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 18.521540808253043, "from": "Supplier_5", "to": "Supplier_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 32.69594616194192, "from": "Supplier_5", "to": "Supplier_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 15.888707790224972, "from": "Supplier_5", "to": "Supplier_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 57.50465016826579, "from": "Supplier_5", "to": "Retailer_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 17.857054117164697, "from": "Retailer_13", "to": "Supplier_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 38.830399159897055, "from": "Retailer_13", "to": "Warehouse_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 15.77372058496527, "from": "Warehouse_3", "to": "Supplier_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 12.258333411625031, "from": "Supplier_17", "to": "Supplier_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 30.66728172712033, "from": "Retailer_3", "to": "Retailer_17", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 81.29429848445778, "from": "Retailer_3", "to": "Warehouse_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 89.07378506632104, "from": "Retailer_3", "to": "Warehouse_11", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 17.404346082875144, "from": "Retailer_15", "to": "Warehouse_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 60.80120026187552, "from": "Retailer_15", "to": "Warehouse_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 84.54489036934238, "from": "Retailer_6", "to": "Supplier_17", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 7.605489060622604, "from": "Warehouse_5", "to": "Retailer_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 65.96642737294081, "from": "Warehouse_5", "to": "Supplier_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 62.40295723705773, "from": "Warehouse_5", "to": "Warehouse_13", "width": 3}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="bottleneckChart" width="400" height="200"></canvas>
+    <script>
+        const ctx = document.getElementById('bottleneckChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Supplier_26->Warehouse_15', 'Supplier_26->Warehouse_4', 'Supplier_26->Retailer_24', 'Supplier_26->Warehouse_7', 'Warehouse_14->Warehouse_5'],
+                datasets: [{
+                    label: 'Impact Score',
+                    data: [9999, 9999, 9999, 9999, 9999],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: { y: { beginAtZero: true } },
+                plugins: { legend: { position: 'top' } }
+            }
+        });
+    </script>
+</body>
+</html>

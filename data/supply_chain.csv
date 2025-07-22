@@ -1,0 +1,5 @@
+source,destination,cost
+Supplier_2,Warehouse_C,12.0
+Supplier_2,Warehouse_D,18.5
+Warehouse_C,Retailer_Z,6.0
+Warehouse_D,Retailer_W,8.0

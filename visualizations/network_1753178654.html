@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#2ca02c", "id": "Warehouse_10", "label": "Warehouse_10", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_7", "label": "Supplier_7", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_7", "label": "Warehouse_7", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_9", "label": "Supplier_9", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_5", "label": "Warehouse_5", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_4", "label": "Supplier_4", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_19", "label": "Retailer_19", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_14", "label": "Warehouse_14", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_2", "label": "Retailer_2", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_11", "label": "Warehouse_11", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_16", "label": "Retailer_16", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_23", "label": "Warehouse_23", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_20", "label": "Warehouse_20", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_15", "label": "Retailer_15", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_10", "label": "Supplier_10", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_14", "label": "Retailer_14", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_12", "label": "Retailer_12", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_2", "label": "Supplier_2", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_12", "label": "Warehouse_12", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_19", "label": "Warehouse_19", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_13", "label": "Warehouse_13", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_20", "label": "Supplier_20", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_3", "label": "Warehouse_3", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_2", "label": "Warehouse_2", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_11", "label": "Supplier_11", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_6", "label": "Retailer_6", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_15", "label": "Supplier_15", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_7", "label": "Retailer_7", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_9", "label": "Retailer_9", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_23", "label": "Supplier_23", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_16", "label": "Supplier_16", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_18", "label": "Supplier_18", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_18", "label": "Warehouse_18", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_20", "label": "Retailer_20", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_6", "label": "Supplier_6", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_10", "label": "Retailer_10", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_3", "label": "Supplier_3", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_17", "label": "Retailer_17", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_13", "label": "Retailer_13", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_4", "label": "Warehouse_4", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_8", "label": "Warehouse_8", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_5", "label": "Supplier_5", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_22", "label": "Retailer_22", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_15", "label": "Warehouse_15", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_11", "label": "Retailer_11", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_21", "label": "Warehouse_21", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_3", "label": "Retailer_3", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_1", "label": "Warehouse_1", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_4", "label": "Retailer_4", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_23", "label": "Retailer_23", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_1", "label": "Retailer_1", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_17", "label": "Supplier_17", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_21", "label": "Supplier_21", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_22", "label": "Warehouse_22", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_8", "label": "Retailer_8", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_13", "label": "Supplier_13", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_17", "label": "Warehouse_17", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_22", "label": "Supplier_22", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_1", "label": "Supplier_1", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_8", "label": "Supplier_8", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_14", "label": "Supplier_14", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_16", "label": "Warehouse_16", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_18", "label": "Retailer_18", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_9", "label": "Warehouse_9", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_24", "label": "Supplier_24", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_21", "label": "Retailer_21", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_19", "label": "Supplier_19", "shape": "dot", "size": 10}, {"color": "#ff7f0e", "id": "Retailer_5", "label": "Retailer_5", "shape": "dot", "size": 10}, {"color": "#2ca02c", "id": "Warehouse_6", "label": "Warehouse_6", "shape": "dot", "size": 10}, {"color": "#1f77b4", "id": "Supplier_12", "label": "Supplier_12", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": "#d62728", "cost": 6.147684193155708, "from": "Warehouse_10", "to": "Supplier_7", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 44.65317420824903, "from": "Warehouse_7", "to": "Warehouse_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 42.76038044009566, "from": "Warehouse_7", "to": "Supplier_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 77.63721562652017, "from": "Warehouse_5", "to": "Supplier_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 14.355048088032753, "from": "Warehouse_5", "to": "Supplier_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 72.49761133449324, "from": "Retailer_19", "to": "Warehouse_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 4.258771871449833, "from": "Supplier_9", "to": "Retailer_2", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 70.54132184727344, "from": "Supplier_9", "to": "Warehouse_11", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 81.173867837692, "from": "Supplier_9", "to": "Retailer_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 97.69278224876302, "from": "Warehouse_23", "to": "Warehouse_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 41.4027051580428, "from": "Warehouse_23", "to": "Retailer_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 95.04893733617034, "from": "Warehouse_23", "to": "Supplier_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 64.54680725676927, "from": "Retailer_14", "to": "Supplier_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 53.542570236218396, "from": "Warehouse_14", "to": "Retailer_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 84.8041225036114, "from": "Warehouse_14", "to": "Retailer_12", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 36.90543410322079, "from": "Warehouse_14", "to": "Retailer_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 55.62148274514785, "from": "Supplier_2", "to": "Warehouse_12", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 30.395683085746924, "from": "Supplier_4", "to": "Retailer_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 34.860134694649744, "from": "Supplier_4", "to": "Warehouse_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 46.39101213741894, "from": "Warehouse_12", "to": "Warehouse_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 54.0676152889317, "from": "Supplier_20", "to": "Warehouse_3", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 10.699538899620597, "from": "Warehouse_2", "to": "Supplier_11", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 35.75714916697343, "from": "Retailer_6", "to": "Supplier_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 87.59087339131679, "from": "Retailer_7", "to": "Retailer_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 58.61774284360002, "from": "Retailer_7", "to": "Retailer_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 82.79725996848116, "from": "Retailer_7", "to": "Retailer_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 3.799726884892664, "from": "Retailer_7", "to": "Supplier_7", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 93.88954268962536, "from": "Supplier_23", "to": "Retailer_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 31.61724046081727, "from": "Supplier_23", "to": "Supplier_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 10.102088096509311, "from": "Supplier_18", "to": "Warehouse_18", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 46.484743134989365, "from": "Warehouse_18", "to": "Warehouse_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 98.41350522548785, "from": "Warehouse_18", "to": "Retailer_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 50.742575659986194, "from": "Warehouse_18", "to": "Supplier_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 22.259670275853228, "from": "Warehouse_18", "to": "Supplier_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 72.0951543514791, "from": "Warehouse_18", "to": "Retailer_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 84.17701946187324, "from": "Supplier_3", "to": "Retailer_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 91.59539925238593, "from": "Supplier_3", "to": "Retailer_17", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 3.3694663837585432, "from": "Supplier_3", "to": "Retailer_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 6.621262579456582, "from": "Warehouse_4", "to": "Warehouse_12", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 77.18847520912304, "from": "Warehouse_4", "to": "Retailer_12", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 18.53244705540808, "from": "Warehouse_4", "to": "Warehouse_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 94.98142147170863, "from": "Warehouse_4", "to": "Supplier_11", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 45.9056867620013, "from": "Supplier_5", "to": "Retailer_22", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 24.666345244990428, "from": "Retailer_20", "to": "Warehouse_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 62.89177671611461, "from": "Retailer_11", "to": "Warehouse_21", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 63.85995325540486, "from": "Warehouse_11", "to": "Warehouse_18", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 88.44834923037173, "from": "Retailer_3", "to": "Warehouse_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 19.823411896060154, "from": "Warehouse_1", "to": "Warehouse_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 39.7263932583776, "from": "Retailer_4", "to": "Retailer_16", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 88.4472924868154, "from": "Retailer_23", "to": "Supplier_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 95.76797337585441, "from": "Supplier_15", "to": "Warehouse_20", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 41.59260509512442, "from": "Retailer_1", "to": "Retailer_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 88.6602179009671, "from": "Retailer_17", "to": "Warehouse_2", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 56.38954930680338, "from": "Retailer_17", "to": "Warehouse_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 7.898506517616727, "from": "Supplier_17", "to": "Supplier_21", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 79.3941205052727, "from": "Supplier_17", "to": "Warehouse_22", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 97.3825216307641, "from": "Retailer_8", "to": "Supplier_17", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 77.80312775536872, "from": "Warehouse_15", "to": "Supplier_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 30.667047892086455, "from": "Warehouse_15", "to": "Supplier_17", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 45.741745182139894, "from": "Warehouse_17", "to": "Warehouse_22", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 62.53364846918083, "from": "Supplier_10", "to": "Warehouse_22", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 97.48113261470269, "from": "Warehouse_8", "to": "Supplier_18", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 34.322566565875576, "from": "Warehouse_19", "to": "Retailer_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 43.57894990431253, "from": "Warehouse_19", "to": "Supplier_22", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 22.037517887967535, "from": "Supplier_1", "to": "Retailer_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 86.98101380213517, "from": "Supplier_8", "to": "Retailer_11", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 30.463578273243392, "from": "Supplier_8", "to": "Supplier_11", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 48.36232187677078, "from": "Retailer_10", "to": "Warehouse_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 30.455110731699563, "from": "Retailer_10", "to": "Supplier_18", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 20.642015875441192, "from": "Warehouse_22", "to": "Retailer_8", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 93.50936726641712, "from": "Warehouse_22", "to": "Supplier_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 18.95565713474174, "from": "Warehouse_21", "to": "Supplier_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 64.83189722178349, "from": "Warehouse_21", "to": "Supplier_10", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 54.67228400031641, "from": "Warehouse_16", "to": "Supplier_9", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 53.362289830236264, "from": "Warehouse_16", "to": "Warehouse_14", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 11.278049974396533, "from": "Warehouse_16", "to": "Supplier_15", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 12.733295797754288, "from": "Retailer_18", "to": "Warehouse_3", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 25.112498002549685, "from": "Warehouse_9", "to": "Warehouse_13", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 13.96773438797401, "from": "Supplier_14", "to": "Warehouse_4", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 75.8260613676504, "from": "Supplier_14", "to": "Warehouse_3", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 86.44951731911527, "from": "Supplier_24", "to": "Warehouse_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 76.384190080809, "from": "Supplier_24", "to": "Warehouse_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 63.22983438368646, "from": "Retailer_16", "to": "Retailer_21", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 70.54573188282407, "from": "Warehouse_13", "to": "Retailer_6", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 4.4402072577825225, "from": "Warehouse_13", "to": "Supplier_19", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 7.065453280386897, "from": "Warehouse_3", "to": "Warehouse_5", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 89.51583477290359, "from": "Warehouse_3", "to": "Supplier_23", "width": 3}, {"arrows": "to", "color": "#d62728", "cost": 84.48238201569315, "from": "Warehouse_3", "to": "Retailer_3", "width": 3}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
